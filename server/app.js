@@ -55,7 +55,7 @@ passport.use(new LinkedInStrategy({
   scope: ['openid','email','profile'],
 }, function (accessToken, refreshToken, profile, done) {
   // asynchronous verification, for effect...
-  console.log("token: ",accessToken, refreshToken, profile, done);
+  // console.log("token: ",accessToken, refreshToken, profile, done);
   process.nextTick(function () {
     // To keep the example simple, the user's LinkedIn profile is returned to
     // represent the logged-in user. In a typical application, you would want
@@ -69,7 +69,15 @@ passport.use(new LinkedInStrategy({
 
 app.get('/auth/linkedin', passport.authenticate('linkedin', {
   scope: ['openid','email','profile'],
-}));
+}), async (req,res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  // console.log(req,res);
+});
+
+// app.get('/auth/linkedin/callback',
+//   passport.authenticate('linkedin'), (req,res) => {
+//     console.log("dytfghusfjflkhjb",req.user);
+//   });
 
 app.get('/auth/linkedin/callback',
   passport.authenticate('linkedin', {
@@ -79,7 +87,8 @@ app.get('/auth/linkedin/callback',
 
 
 app.get("/success",async (req,res) => {
-  res.send("Hello");
+  // console.log("sdfghjhjggf",req.user);
+  res.send(req.user._json);
 });
 
 app.post("/register", async (req, res) => {

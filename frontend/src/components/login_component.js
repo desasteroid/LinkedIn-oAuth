@@ -1,9 +1,12 @@
 import React, { Component, useState } from "react";
+import {useNavigate} from "react-router-dom";
+import linkedinLogo from '../assets/images/linkedin.png'
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  let navigate = useNavigate();
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -30,8 +33,14 @@ export default function Login() {
           window.localStorage.setItem("loggedIn", true);
           window.location.href = "./userDetails";
         }
+      }).catch((err) => {
+        console.log(err);
       });
   }
+
+  const LoginLinkedin = () => {
+    window.location.href = "http://localhost:5000/auth/linkedin";
+  };
 
   return (
     <div className="auth-wrapper">
@@ -67,7 +76,16 @@ export default function Login() {
             Don't have an account? <a href="/sign-up">Sign Up</a>
           </p>
           
-          <h6>or</h6>
+          <h6>Or</h6>
+
+          <div className="d-grid">
+            <button onClick={LoginLinkedin} className="btn btn-primary">
+              <LinkedInIcon style={{fontSize:'30'}}/>
+              &nbsp;
+              Continue with <b>LinkedIn</b>
+              {/* <img src={linkedinLogo} width={25}></img> */}
+            </button>
+          </div>
           
         </form>
     </div>
