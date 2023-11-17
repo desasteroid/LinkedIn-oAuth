@@ -1,0 +1,15 @@
+.page-container {
+
+}
+
+.form-container{
+    padding: 40px 18rem;
+    margin-top: 20px;
+}
+
+.form-row{
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

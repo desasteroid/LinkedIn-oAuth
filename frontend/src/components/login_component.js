@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import {useNavigate} from "react-router-dom";
 import linkedinLogo from '../assets/images/linkedin.png'
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import "./css/login-signup.css"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -43,8 +44,9 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-wrapper">
-        <form onSubmit={handleSubmit}>
+    <div className="loginWrapper">
+      <div className="innerLoginWrapper">
+        <form onSubmit={handleSubmit} className="custom-form-main-container">
           <h3>Sign In</h3>
 
           <div className="mb-3">
@@ -88,6 +90,7 @@ export default function Login() {
           </div>
           
         </form>
+      </div>
     </div>
   );
 }

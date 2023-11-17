@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import './css/login-signup.css'
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -39,8 +40,9 @@ export default function SignUp() {
   };
 
   return (
-    <div className="auth-wrapper">
-        <form onSubmit={handleSubmit}>
+    <div className="loginWrapper">
+      <div className="innerLoginWrapper">
+        <form onSubmit={handleSubmit} className="custom-form-main-container">
           <h3>Sign Up</h3>
 
           <div className="mb-3">
@@ -102,6 +104,7 @@ export default function SignUp() {
             Already have an account? <a href="/Sign-in">sign in</a>
           </p>
         </form>
+      </div>
     </div>
   );
 }
