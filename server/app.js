@@ -36,8 +36,10 @@ mongoose
   })
   .catch((e) => console.log(e));
 
-require("./userDetails");
-const User = mongoose.model("UserInfo");
+  require("./userDetails");
+  require("./resumeDetails");
+  const User = mongoose.model("UserInfo");
+  const resumeData = mongoose.model("ResumeInfo");
 
 //passport
 passport.serializeUser(function (user, cb) {
@@ -159,6 +161,19 @@ app.post("/userData", async (req, res) => {
       });
   } catch (error) { }
 });
+
+app.post("/saveResumeData", async(req, res) => {
+  let data = req.body;
+  console.log("Resume Data: ",data);
+  try{
+    const insert = await resumeData.create(data)
+    console.log(insert);
+  } catch(error)
+  {
+    res.send({ status: "error", data: error })
+  }
+  res.send({status: "success"});
+})
 
 app.listen(5000, () => {
   console.log("Server Started");
