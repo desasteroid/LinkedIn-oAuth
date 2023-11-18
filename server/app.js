@@ -27,6 +27,8 @@ const JWT_SECRET =
 const mongoUrl =
   "mongodb+srv://priyanka76399:Anjali399@cluster0.nvc0pxi.mongodb.net/?retryWrites=true&w=majority";
 
+const CLIENT_URL = "http://127.0.0.1:3000/";
+
 mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true,
@@ -38,26 +40,60 @@ mongoose
 
   require("./userDetails");
   require("./resumeDetails");
+  require("./linkedinDetails");
   const User = mongoose.model("UserInfo");
   const resumeData = mongoose.model("ResumeInfo");
+  const linkedinData = mongoose.model("LinkedinInfo");
 
 //passport
-passport.serializeUser(function (user, cb) {
-  cb(null, user);
-});
+// passport.serializeUser(function (user, cb) {
+//   cb(null, user);
+// });
 
-passport.deserializeUser(function (obj, cb) {
-  cb(null, obj);
-});
+// passport.deserializeUser(function (obj, cb) {
+//   cb(null, obj);
+// });
 
 passport.use(new LinkedInStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   callbackURL: process.env.CALLBACKURL,
   scope: ['openid','email','profile'],
-}, function (accessToken, refreshToken, profile, done) {
-  // asynchronous verification, for effect...
-  // console.log("token: ",accessToken, refreshToken, profile, done);
+}, async function (accessToken, refreshToken, profile, done) {
+
+  try{
+    const profileData = {
+      accessToken,
+      refreshToken,
+      id: profile.id,
+      fname : profile.givenName,
+      lname : profile.familyName,
+      email : profile.email,
+      picture : profile.picture
+    };
+    const resumeInfo = {
+      username: profile.id,
+      picture: profile.picture,
+      personalDetails: {
+        firstName: profile.givenName,
+        lastName: profile.familyName,
+        email: profile.email,
+      }
+    }
+    const user = await linkedinData.findOne({ username: profile.id });
+    if(!user) {
+      const insert = await linkedinData.create(profileData);
+      const resumeInsert = await resumeData.create(resumeInfo);
+      console.log("DB Insert :", insert, resumeInsert);
+    } else {
+      const update = await linkedinData.updateOne({ username: profile.id }, profileData);
+      const resumeUpdate = await resumeData.updateOne({username: profile.id}, resumeInfo);
+      console.log("DB Update:", update, resumeUpdate);
+    }
+  } catch(error)
+  {
+    console.log(error);
+  }
   process.nextTick(function () {
     // To keep the example simple, the user's LinkedIn profile is returned to
     // represent the logged-in user. In a typical application, you would want
@@ -81,16 +117,20 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', {
 //     console.log("dytfghusfjflkhjb",req.user);
 //   });
 
-app.get('/auth/linkedin/callback',
-  passport.authenticate('linkedin', {
-    successRedirect: '/success',
-    failureRedirect: '/login-user'
-  }));
-
+app.get('/auth/linkedin/callback', function(req, res, next) {
+  passport.authenticate('linkedin', function(err, user, info, status) {
+    if (err) { return res.redirect(CLIENT_URL) }
+    if (!user) { return res.redirect(CLIENT_URL) }
+    const token = jwt.sign({ username:  user.id}, JWT_SECRET, {
+      expiresIn: "15m",
+    });
+    res.redirect(CLIENT_URL + "log?token=" + token);
+  })(req, res, next);
+});
 
 app.get("/success",async (req,res) => {
   // console.log("sdfghjhjggf",req.user);
-  res.send(req.user._json);
+  res.send(req.user);
 });
 
 app.post("/register", async (req, res) => {
