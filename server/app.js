@@ -21,13 +21,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const JWT_SECRET =
-  "hghckgukuhylvv7ltuli6465567i7576lnir66846468utieunin959tm8v9ccc{{}cmopsp5475655665343ctsojynvs";
-
-const mongoUrl =
-  "mongodb+srv://priyanka76399:Anjali399@cluster0.nvc0pxi.mongodb.net/?retryWrites=true&w=majority";
-
-const CLIENT_URL = "http://127.0.0.1:3000/";
+const JWT_SECRET = process.env.JWT_SECRET
+const mongoUrl = process.env.MONGODB_URL
+const CLIENT_URL = process.env.CLIENT_URL
 
 mongoose
   .connect(mongoUrl, {
@@ -60,11 +56,10 @@ passport.use(new LinkedInStrategy({
   callbackURL: process.env.CALLBACKURL,
   scope: ['openid','email','profile'],
 }, async function (accessToken, refreshToken, profile, done) {
-
   try{
     const profileData = {
       accessToken,
-      refreshToken,
+      refreshToken: refreshToken,
       id: profile.id,
       fname : profile.givenName,
       lname : profile.familyName,
@@ -124,7 +119,7 @@ app.get('/auth/linkedin/callback', function(req, res, next) {
     const token = jwt.sign({ username:  user.id}, JWT_SECRET, {
       expiresIn: "15m",
     });
-    res.redirect(CLIENT_URL + "log?token=" + token);
+    res.redirect(CLIENT_URL + "loggedin?token=" + token);
   })(req, res, next);
 });
 

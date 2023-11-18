@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./css/loggedin.css";
 
 const LoggedInForm = () => {
   //State variables
+  const [oauthUserName, setOauthUserName] = useState("")
   const [userName, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -34,10 +35,17 @@ const LoggedInForm = () => {
   const [eduToDate, setEduToDate] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
 
   let navigate = useNavigate();
 
   useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      window.localStorage.setItem("loggedIn", true);
+      window.localStorage.setItem("token", token);
+      window.localStorage.setItem("authMethod", 'oAuth');
+    }
     const isLoggedIn = window.localStorage.getItem("loggedIn");
     if (!isLoggedIn) {
       navigate("/sign-in");
@@ -97,6 +105,7 @@ const LoggedInForm = () => {
           navigate("/sign-in");
           return;
         }
+        setOauthUserName(data.data.personalDetails.firstName);
       });
   }, []);
 
@@ -142,6 +151,7 @@ const LoggedInForm = () => {
       .then((res) => {
         console.log("Data Insertion Request Status: ", res.data.status);
       });
+    setOauthUserName(firstName);
   };
   return (
     <>
@@ -160,7 +170,7 @@ const LoggedInForm = () => {
                   fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
                 }}
               >
-                Hi {userName}
+                Hi { window.localStorage.getItem("authMethod")? oauthUserName : userName }
               </Typography>
               <Button color="inherit" onClick={handleLogout}>
                 Logout
