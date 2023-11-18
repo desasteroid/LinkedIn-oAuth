@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
  
 const ResumeDetailsScehma = new mongoose.Schema(
   {
+    username: { type: String, unique: true },
     personalDetails: {
         firstName: String,
         lastName: String,

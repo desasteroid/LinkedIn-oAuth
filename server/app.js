@@ -98,11 +98,16 @@ app.post("/register", async (req, res) => {
 
   const encryptedPassword = await bcrypt.hash(password, 10);
   try {
-    const oldUser = await User.findOne({ email });
-
-    if (oldUser) {
-      return res.json({ error: "User Exists" });
+    const oldUserEmailVal = await User.findOne({ email });
+    if (oldUserEmailVal) {
+      return res.json({ error: "Account already exists for this email." });
     }
+
+    const oldUserUnameVal = await User.findOne({ username })
+    if (oldUserUnameVal) {
+      return res.json({ error: "Username already in use."});
+    }
+
     await User.create({
       username,
       fname,
@@ -112,7 +117,7 @@ app.post("/register", async (req, res) => {
     });
     res.send({ status: "ok" });
   } catch (error) {
-    res.send({ status: "error" });
+    res.send({ error: "Something went wrong."});
   }
 });
 
@@ -124,7 +129,7 @@ app.post("/login-user", async (req, res) => {
     return res.json({ error: "User Not found" });
   }
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ username: user.username }, JWT_SECRET, {
       expiresIn: "15m",
     });
 
@@ -151,10 +156,10 @@ app.post("/userData", async (req, res) => {
       return res.send({ status: "error", data: "token expired" });
     }
 
-    const useremail = user.email;
-    User.findOne({ email: useremail })
+    const username = user.username;
+    resumeData.findOne({ username: username })
       .then((data) => {
-        res.send({ status: "ok", data: data });
+        res.send({ status: "ok", username, data: data });
       })
       .catch((error) => {
         res.send({ status: "error", data: error });
@@ -166,8 +171,14 @@ app.post("/saveResumeData", async(req, res) => {
   let data = req.body;
   console.log("Resume Data: ",data);
   try{
-    const insert = await resumeData.create(data)
-    console.log("DB Data :", insert);
+    const user = await resumeData.findOne({ username: data.username });
+    if(!user) {
+      const insert = await resumeData.create(data)
+      console.log("DB Insert :", insert);
+    } else {
+      const update = await resumeData.updateOne({ username: data.username }, data);
+      console.log("DB Update:", update);
+    }
   } catch(error)
   {
     res.send({ status: "error", data: error })

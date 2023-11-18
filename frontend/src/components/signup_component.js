@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './css/login-signup.css'
 
 export default function SignUp() {
@@ -7,6 +8,9 @@ export default function SignUp() {
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,9 +36,11 @@ export default function SignUp() {
       .then((data) => {
         console.log(data, "userRegister");
         if (data.status == "ok") {
-          alert("Registration Successful");
+          alert("Registration Successful. Please login now.");
+          // Redirect to Login Page
+          navigate("/sign-in");
         } else {
-          alert("Something went wrong");
+          alert(data.error);
         }
       });
   };
@@ -52,6 +58,7 @@ export default function SignUp() {
               className="form-control"
               placeholder="Username"
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
 
@@ -62,6 +69,7 @@ export default function SignUp() {
               className="form-control"
               placeholder="First name"
               onChange={(e) => setFname(e.target.value)}
+              required
             />
           </div>
 
@@ -72,6 +80,7 @@ export default function SignUp() {
               className="form-control"
               placeholder="Last name"
               onChange={(e) => setLname(e.target.value)}
+              required
             />
           </div>
 
@@ -82,6 +91,7 @@ export default function SignUp() {
               className="form-control"
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -92,6 +102,7 @@ export default function SignUp() {
               className="form-control"
               placeholder="Enter password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 

@@ -1,18 +1,18 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./css/loggedin.css";
 
 const LoggedInForm = () => {
-  const userName = "Aniket";
-
   //State variables
+  const [userName, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +22,7 @@ const LoggedInForm = () => {
   const [skills, setSkills] = useState("");
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
-  const [officeLocation, setofficeLocation] = useState("");
+  const [officeLocation, setOfficeLocation] = useState("");
   const [description, setDescription] = useState("");
   const [workFromDate, setWorkFromDate] = useState("");
   const [workToDate, setWorkToDate] = useState("");
@@ -33,10 +33,83 @@ const LoggedInForm = () => {
   const [eduFromDate, setEduFromDate] = useState("");
   const [eduToDate, setEduToDate] = useState("");
 
+  const [loading, setLoading] = useState(true);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = window.localStorage.getItem("loggedIn");
+    if (!isLoggedIn) {
+      navigate("/sign-in");
+      return setLoading(false);
+    }
+    setLoading(false);
+
+    //Fetch User Data
+    fetch("http://localhost:5000/userData", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        token: window.localStorage.getItem("token"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userData");
+        if (data.data == "token expired") {
+          alert("Token expired login again");
+          window.localStorage.clear();
+          navigate("/sign-in");
+          return;
+        }
+
+        if (data.status == "ok" && data.data) {
+          setUsername(data.data.username);
+          setFirstName(data.data.personalDetails.firstName);
+          setLastName(data.data.personalDetails.lastName);
+          setEmail(data.data.personalDetails.email);
+          setPhone(data.data.personalDetails.phone);
+          setAddress(data.data.personalDetails.address);
+          setBio(data.data.personalDetails.bio);
+          setSkills(data.data.personalDetails.skills);
+          setRole(data.data.workExperience.role);
+          setCompany(data.data.workExperience.company);
+          setOfficeLocation(data.data.workExperience.officeLocation);
+          setDescription(data.data.workExperience.description);
+          setWorkFromDate(data.data.workExperience.workFromDate);
+          setWorkToDate(data.data.workExperience.workToDate);
+          setInstitute(data.data.educationDetails.institute);
+          setMajor(data.data.educationDetails.major);
+          setDegree(data.data.educationDetails.degree);
+          setEduLocation(data.data.educationDetails.eduLocation);
+          setEduFromDate(data.data.educationDetails.eduFromDate);
+          setEduToDate(data.data.educationDetails.eduToDate);
+        } else if (data.status == "ok") {
+          setUsername(data.username);
+        } else {
+          alert("Internal Server Error!");
+          window.localStorage.clear();
+          navigate("/sign-in");
+          return;
+        }
+      });
+  }, []);
+
+  const handleLogout = () => {
+    window.localStorage.clear();
+    navigate("/sign-in");
+  };
+
   const handleSubmit = (event) => {
     console.log("Submit Button Clicked");
     event.preventDefault();
     const resumeData = {
+      username: userName,
       personalDetails: {
         firstName,
         lastName,
@@ -64,32 +137,38 @@ const LoggedInForm = () => {
       },
     };
     console.log(resumeData);
-    axios.post('http://localhost:5000/saveResumeData', resumeData).then((res)=>{
-      console.log("Data Insertion Request Status: ", res.data.status)
-    })
+    axios
+      .post("http://localhost:5000/saveResumeData", resumeData)
+      .then((res) => {
+        console.log("Data Insertion Request Status: ", res.data.status);
+      });
   };
   return (
-    <div className="page-container">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              align="left"
-              sx={{
-                flexGrow: 1,
-                justifyContent: "flex-start",
-                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-              }}
-            >
-              Hi {userName}
-            </Typography>
-            <Button color="inherit">Logout</Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <div className="form-container">
+    <>
+      {loading && <div className="Loader-Animation" />}
+      <div className="page-container">
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography
+                variant="h6"
+                component="div"
+                align="left"
+                sx={{
+                  flexGrow: 1,
+                  justifyContent: "flex-start",
+                  fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                }}
+              >
+                Hi {userName}
+              </Typography>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </Toolbar>
+          </AppBar>
+        </Box>
+        <div className="form-container">
           <Box
             component="form"
             sx={{
@@ -216,7 +295,7 @@ const LoggedInForm = () => {
                 type="text"
                 variant="outlined"
                 label="Office Location"
-                onChange={(e) => setofficeLocation(e.target.value)}
+                onChange={(e) => setOfficeLocation(e.target.value)}
                 value={officeLocation}
                 fullWidth
               />
@@ -331,8 +410,9 @@ const LoggedInForm = () => {
               Save
             </Button>
           </Box>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
