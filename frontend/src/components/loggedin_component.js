@@ -22,7 +22,7 @@ const LoggedInForm = () => {
   const [skills, setSkills] = useState("");
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
-  const [offLocation, setoffLocation] = useState("");
+  const [officeLocation, setofficeLocation] = useState("");
   const [description, setDescription] = useState("");
   const [workFromDate, setWorkFromDate] = useState("");
   const [workToDate, setWorkToDate] = useState("");
@@ -37,7 +37,7 @@ const LoggedInForm = () => {
     console.log("Submit Button Clicked");
     event.preventDefault();
     const resumeData = {
-      pesonalDetails: {
+      personalDetails: {
         firstName,
         lastName,
         email,
@@ -49,7 +49,7 @@ const LoggedInForm = () => {
       workExperience: {
         role,
         company,
-        offLocation,
+        officeLocation,
         description,
         workFromDate,
         workToDate,
@@ -216,8 +216,8 @@ const LoggedInForm = () => {
                 type="text"
                 variant="outlined"
                 label="Office Location"
-                onChange={(e) => setoffLocation(e.target.value)}
-                value={offLocation}
+                onChange={(e) => setofficeLocation(e.target.value)}
+                value={officeLocation}
                 fullWidth
               />
             </div>

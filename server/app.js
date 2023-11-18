@@ -167,7 +167,7 @@ app.post("/saveResumeData", async(req, res) => {
   console.log("Resume Data: ",data);
   try{
     const insert = await resumeData.create(data)
-    console.log(insert);
+    console.log("DB Data :", insert);
   } catch(error)
   {
     res.send({ status: "error", data: error })

@@ -6,7 +6,7 @@ const ResumeDetailsScehma = new mongoose.Schema(
         firstName: String,
         lastName: String,
         email: String,
-        phoneNo: String,
+        phone: String,
         address: String,
         bio: String,
         skills: String
@@ -16,16 +16,16 @@ const ResumeDetailsScehma = new mongoose.Schema(
         company: String,
         officeLocation: String,
         description: String,
-        workFromDate: Date,
-        workToDate: Date
+        workFromDate: String,
+        workToDate: String
     },
     educationDetails: {
-        institution: String,
+        institute: String,
         major: String,
         degree: String,
         eduLocation: String,
-        eduFromDate: Date,
-        eduTODate: Date
+        eduFromDate: String,
+        eduToDate: String
     }
   },
   {
