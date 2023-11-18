@@ -90,247 +90,249 @@ const LoggedInForm = () => {
         </AppBar>
       </Box>
       <div className="form-container">
-        <Box
-          component="form"
-          sx={{
-            "& .`MuiTextField-root": { m: 1, width: "1000ch" },
-          }}
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <Typography
-            variant="h5"
-            component="div"
+        <form>
+          <Box
+            component="form"
             sx={{
-              margin: "3rem 0rem",
-              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+              "& .MuiTextField-root": { m: 1, width: "1000ch" },
             }}
+            autoComplete="off"
+            onSubmit={handleSubmit}
           >
-            Personal Details
-          </Typography>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="First Name"
-              onChange={(e) => {
-                setFirstName(e.target.value);
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                margin: "3rem 0rem",
+                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
               }}
-              value={firstName}
-              required
-            />
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Last Name"
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="email"
-              variant="outlined"
-              label="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              required
-            />
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Phone No."
-              onChange={(e) => setPhone(e.target.value)}
-              value={phone}
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Address"
-              onChange={(e) => setAddress(e.target.value)}
-              value={address}
-              multiline
-              rows={4}
-              required
-              fullWidth
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Description(Bio)"
-              onChange={(e) => setBio(e.target.value)}
-              value={bio}
-              multiline
-              rows={4}
-              required
-              fullWidth
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Skills"
-              onChange={(e) => setSkills(e.target.value)}
-              value={skills}
-              multiline
-              rows={4}
-              required
-              fullWidth
-            />
-          </div>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              margin: "3rem 0rem",
-              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-            }}
-          >
-            Latest Work Experience
-          </Typography>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Role"
-              onChange={(e) => setRole(e.target.value)}
-              value={role}
-              required
-            />
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Company"
-              onChange={(e) => setCompany(e.target.value)}
-              value={company}
-              required
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Office Location"
-              onChange={(e) => setoffLocation(e.target.value)}
-              value={offLocation}
-              fullWidth
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Description"
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
-              multiline
-              rows={4}
-              fullWidth
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="date"
-              variant="outlined"
-              label="From"
-              onChange={(e) => setWorkFromDate(e.target.value)}
-              value={workFromDate}
-              required
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              type="date"
-              variant="outlined"
-              label="To"
-              onChange={(e) => setWorkToDate(e.target.value)}
-              value={workToDate}
-              required
-              InputLabelProps={{ shrink: true }}
-            />
-          </div>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              margin: "3rem 0rem",
-              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-            }}
-          >
-            Latest Education
-          </Typography>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Institution"
-              onChange={(e) => setInstitute(e.target.value)}
-              value={institute}
-              fullWidth
-              required
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Major"
-              onChange={(e) => setMajor(e.target.value)}
-              value={major}
-              required
-            />
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Degree"
-              onChange={(e) => setDegree(e.target.value)}
-              value={degree}
-            />
-          </div>
+            >
+              Personal Details
+            </Typography>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="First Name"
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
+                value={firstName}
+                required
+              />
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Last Name"
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="email"
+                variant="outlined"
+                label="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                required
+              />
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Phone No."
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Address"
+                onChange={(e) => setAddress(e.target.value)}
+                value={address}
+                multiline
+                rows={4}
+                required
+                fullWidth
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Description(Bio)"
+                onChange={(e) => setBio(e.target.value)}
+                value={bio}
+                multiline
+                rows={4}
+                required
+                fullWidth
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Skills"
+                onChange={(e) => setSkills(e.target.value)}
+                value={skills}
+                multiline
+                rows={4}
+                required
+                fullWidth
+              />
+            </div>
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                margin: "3rem 0rem",
+                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+              }}
+            >
+              Latest Work Experience
+            </Typography>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Role"
+                onChange={(e) => setRole(e.target.value)}
+                value={role}
+                required
+              />
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Company"
+                onChange={(e) => setCompany(e.target.value)}
+                value={company}
+                required
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Office Location"
+                onChange={(e) => setoffLocation(e.target.value)}
+                value={offLocation}
+                fullWidth
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Description"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                multiline
+                rows={4}
+                fullWidth
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="date"
+                variant="outlined"
+                label="From"
+                onChange={(e) => setWorkFromDate(e.target.value)}
+                value={workFromDate}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                type="date"
+                variant="outlined"
+                label="To"
+                onChange={(e) => setWorkToDate(e.target.value)}
+                value={workToDate}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+            </div>
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                margin: "3rem 0rem",
+                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+              }}
+            >
+              Latest Education
+            </Typography>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Institution"
+                onChange={(e) => setInstitute(e.target.value)}
+                value={institute}
+                fullWidth
+                required
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Major"
+                onChange={(e) => setMajor(e.target.value)}
+                value={major}
+                required
+              />
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Degree"
+                onChange={(e) => setDegree(e.target.value)}
+                value={degree}
+              />
+            </div>
 
-          <div className="form-row">
-            <TextField
-              type="text"
-              variant="outlined"
-              label="Location"
-              onChange={(e) => setEduLocation(e.target.value)}
-              value={eduLocation}
-              fullWidth
-              required
-            />
-          </div>
-          <div className="form-row">
-            <TextField
-              type="date"
-              variant="outlined"
-              label="From"
-              onChange={(e) => setEduFromDate(e.target.value)}
-              value={eduFromDate}
-              required
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              type="date"
-              variant="outlined"
-              label="To"
-              onChange={(e) => setEduToDate(e.target.value)}
-              value={eduToDate}
-              required
-              InputLabelProps={{ shrink: true }}
-            />
-          </div>
-          <Button
-            type="submit"
-            sx={{ margin: "2rem 0rem" }}
-            variant="contained"
-          >
-            Save
-          </Button>
-        </Box>
+            <div className="form-row">
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Location"
+                onChange={(e) => setEduLocation(e.target.value)}
+                value={eduLocation}
+                fullWidth
+                required
+              />
+            </div>
+            <div className="form-row">
+              <TextField
+                type="date"
+                variant="outlined"
+                label="From"
+                onChange={(e) => setEduFromDate(e.target.value)}
+                value={eduFromDate}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                type="date"
+                variant="outlined"
+                label="To"
+                onChange={(e) => setEduToDate(e.target.value)}
+                value={eduToDate}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+            </div>
+            <Button
+              type="submit"
+              sx={{ margin: "2rem 0rem" }}
+              variant="contained"
+            >
+              Save
+            </Button>
+          </Box>
+        </form>
       </div>
     </div>
   );
