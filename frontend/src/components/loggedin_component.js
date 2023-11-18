@@ -90,7 +90,6 @@ const LoggedInForm = () => {
         </AppBar>
       </Box>
       <div className="form-container">
-        <form>
           <Box
             component="form"
             sx={{
@@ -332,7 +331,6 @@ const LoggedInForm = () => {
               Save
             </Button>
           </Box>
-        </form>
       </div>
     </div>
   );
